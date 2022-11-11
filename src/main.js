@@ -47,20 +47,6 @@ var Vector2d = /** @class */ (function () {
     return Vector2d;
 }());
 var BOX_SIZE = 16;
-/*
-function differencePeriodic(v1: Vector2d, v2: Vector2d): Vector2d {
-    let delta = new Vector2d(Math.abs(v1.x - v2.x), Math.abs(v1.y - v2.y));
-
-    if(delta.x > BOX_SIZE/2) {
-        delta.x = BOX_SIZE - delta.x;
-    }
-    if(delta.y > BOX_SIZE/2) {
-        delta.y = BOX_SIZE - delta.y;
-    }
-
-    return delta;
-}
-*/
 function differencePeriodic(v1, v2) {
     var delta = new Vector2d(v1.x - v2.x, v1.y - v2.y);
     if (delta.x > BOX_SIZE / 2) {
@@ -122,10 +108,15 @@ function step(particles, h) {
 var SCALE = 40;
 var renderer = new Renderer(canvas);
 var particles = [];
-particles.push({ position: new Vector2d(5, 5), velocity: new Vector2d(1, 0) });
-particles.push({ position: new Vector2d(6, 6), velocity: new Vector2d(0, 0) });
-particles.push({ position: new Vector2d(10, 6), velocity: new Vector2d(0, 0) });
-particles.push({ position: new Vector2d(8, 8), velocity: new Vector2d(-1, 0) });
+particles.push({ position: new Vector2d(5.0, 5.0), velocity: new Vector2d(2, 0) });
+particles.push({ position: new Vector2d(5.0, 6.2), velocity: new Vector2d(0, -1) });
+particles.push({ position: new Vector2d(5.0, 7.4), velocity: new Vector2d(0, 0) });
+particles.push({ position: new Vector2d(6.2, 5.0), velocity: new Vector2d(0, 0) });
+particles.push({ position: new Vector2d(6.2, 6.2), velocity: new Vector2d(0, 0) });
+particles.push({ position: new Vector2d(6.2, 7.4), velocity: new Vector2d(0, 0) });
+particles.push({ position: new Vector2d(7.4, 5.0), velocity: new Vector2d(-2, 2) });
+particles.push({ position: new Vector2d(7.4, 6.2), velocity: new Vector2d(0, 0) });
+particles.push({ position: new Vector2d(7.4, 7.4), velocity: new Vector2d(0, -1) });
 var lastTimestamp = 0;
 function loop(timestamp) {
     var deltaTime = timestamp - lastTimestamp;

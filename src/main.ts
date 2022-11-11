@@ -69,20 +69,7 @@ type Particle = {
 }
 
 const BOX_SIZE = 16;
-/*
-function differencePeriodic(v1: Vector2d, v2: Vector2d): Vector2d {
-    let delta = new Vector2d(Math.abs(v1.x - v2.x), Math.abs(v1.y - v2.y));
 
-    if(delta.x > BOX_SIZE/2) {
-        delta.x = BOX_SIZE - delta.x;
-    }
-    if(delta.y > BOX_SIZE/2) {
-        delta.y = BOX_SIZE - delta.y;
-    }
-
-    return delta;
-}
-*/
 function differencePeriodic(v1: Vector2d, v2: Vector2d): Vector2d {
     let delta = new Vector2d(v1.x - v2.x, v1.y - v2.y);
 
@@ -154,10 +141,16 @@ const SCALE = 40;
 let renderer = new Renderer(canvas);
 
 let particles: Particle[] = [];
-particles.push({position: new Vector2d(5, 5), velocity: new Vector2d(1, 0)});
-particles.push({position: new Vector2d(6, 6), velocity: new Vector2d(0, 0)});
-particles.push({position: new Vector2d(10, 6), velocity: new Vector2d(0, 0)});
-particles.push({position: new Vector2d(8, 8), velocity: new Vector2d(-1, 0)});
+
+particles.push({position: new Vector2d(5.0, 5.0), velocity: new Vector2d(2, 0)});
+particles.push({position: new Vector2d(5.0, 6.2), velocity: new Vector2d(0, -1)});
+particles.push({position: new Vector2d(5.0, 7.4), velocity: new Vector2d(0, 0)});
+particles.push({position: new Vector2d(6.2, 5.0), velocity: new Vector2d(0, 0)});
+particles.push({position: new Vector2d(6.2, 6.2), velocity: new Vector2d(0, 0)});
+particles.push({position: new Vector2d(6.2, 7.4), velocity: new Vector2d(0, 0)});
+particles.push({position: new Vector2d(7.4, 5.0), velocity: new Vector2d(-2, 2)});
+particles.push({position: new Vector2d(7.4, 6.2), velocity: new Vector2d(0, 0)});
+particles.push({position: new Vector2d(7.4, 7.4), velocity: new Vector2d(0, -1)});
 
 let lastTimestamp = 0;
 
@@ -165,7 +158,7 @@ function loop(timestamp: number) {
     let deltaTime = timestamp - lastTimestamp;
     lastTimestamp = timestamp;
     let framerate = 1000 / deltaTime;
-    framerateText.textContent = framerate.toFixed(1) + " FPS"
+    framerateText.textContent = framerate.toFixed(1) + " FPS";
 
     // Update
     for(let its=0; its<200; its++) {
