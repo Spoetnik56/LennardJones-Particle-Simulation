@@ -1,15 +1,15 @@
-var heading = document.createElement("h1");
-heading.textContent = "Lennard-Jones Particle Simulation";
-document.body.appendChild(heading);
-var framerateText = document.createElement("h2");
-framerateText.textContent = "";
-document.body.appendChild(framerateText);
-var canvas = document.createElement("canvas");
+function getElementByIdWithNullCheck(id) {
+    var element = document.getElementById(id);
+    if (element == null) {
+        throw new Error("Failed to get element");
+    }
+    return element;
+}
+var framerateText = getElementByIdWithNullCheck("framerateText");
+var pauseButton = getElementByIdWithNullCheck("pauseButton");
+var canvas = getElementByIdWithNullCheck("surface");
 canvas.width = 640;
 canvas.height = 640;
-canvas.style.position = "absolute";
-canvas.style.border = "1px solid";
-document.body.appendChild(canvas);
 var Renderer = /** @class */ (function () {
     function Renderer(canvas) {
         var ctx = canvas.getContext("2d");
@@ -118,23 +118,37 @@ particles.push({ position: new Vector2d(7.4, 5.0), velocity: new Vector2d(-2, 2)
 particles.push({ position: new Vector2d(7.4, 6.2), velocity: new Vector2d(0, 0) });
 particles.push({ position: new Vector2d(7.4, 7.4), velocity: new Vector2d(0, -1) });
 var lastTimestamp = 0;
+var isPaused = false;
+var framerate = 60;
+pauseButton.onclick = function () {
+    if (isPaused) {
+        isPaused = false;
+        pauseButton.textContent = "Pause";
+    }
+    else {
+        isPaused = true;
+        pauseButton.textContent = "Resume";
+    }
+};
 function loop(timestamp) {
     var deltaTime = timestamp - lastTimestamp;
     lastTimestamp = timestamp;
-    var framerate = 1000 / deltaTime;
+    framerate = 0.925 * framerate + 0.075 * (1000 / deltaTime);
     framerateText.textContent = framerate.toFixed(1) + " FPS";
     // Update
-    for (var its = 0; its < 200; its++) {
-        step(particles, 1e-4);
-        for (var i = 0; i < particles.length; i++) {
-            if (particles[i].position.x < 0)
-                particles[i].position.x += BOX_SIZE;
-            if (particles[i].position.x > BOX_SIZE)
-                particles[i].position.x -= BOX_SIZE;
-            if (particles[i].position.y < 0)
-                particles[i].position.y += BOX_SIZE;
-            if (particles[i].position.y > BOX_SIZE)
-                particles[i].position.y -= BOX_SIZE;
+    if (!isPaused) {
+        for (var its = 0; its < 200; its++) {
+            step(particles, 1e-4);
+            for (var i = 0; i < particles.length; i++) {
+                if (particles[i].position.x < 0)
+                    particles[i].position.x += BOX_SIZE;
+                if (particles[i].position.x > BOX_SIZE)
+                    particles[i].position.x -= BOX_SIZE;
+                if (particles[i].position.y < 0)
+                    particles[i].position.y += BOX_SIZE;
+                if (particles[i].position.y > BOX_SIZE)
+                    particles[i].position.y -= BOX_SIZE;
+            }
         }
     }
     // Draw

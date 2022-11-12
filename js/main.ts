@@ -1,17 +1,17 @@
-let heading = document.createElement("h1");
-heading.textContent = "Lennard-Jones Particle Simulation";
-document.body.appendChild(heading);
+function getElementByIdWithNullCheck(id: string): HTMLElement {
+    let element = document.getElementById(id);
+    if(element == null) {
+        throw new Error("Failed to get element");
+    }
+    return element;
+}
 
-let framerateText = document.createElement("h2");
-framerateText.textContent = "";
-document.body.appendChild(framerateText);
+let framerateText = getElementByIdWithNullCheck("framerateText") as HTMLParagraphElement;
+let pauseButton = getElementByIdWithNullCheck("pauseButton") as HTMLButtonElement;
 
-let canvas = document.createElement("canvas");
+let canvas = getElementByIdWithNullCheck("surface") as HTMLCanvasElement;
 canvas.width = 640;
 canvas.height = 640;
-canvas.style.position = "absolute";
-canvas.style.border = "1px solid";
-document.body.appendChild(canvas);
 
 
 class Renderer {
@@ -22,7 +22,7 @@ class Renderer {
     constructor(canvas: HTMLCanvasElement) {
         let ctx = canvas.getContext("2d")
         if(ctx == null) {
-            throw new Error("Failed to get 2D context")
+            throw new Error("Failed to get 2D context");
         }
         this._ctx = ctx;
         this.width = canvas.width;
@@ -153,22 +153,36 @@ particles.push({position: new Vector2d(7.4, 6.2), velocity: new Vector2d(0, 0)})
 particles.push({position: new Vector2d(7.4, 7.4), velocity: new Vector2d(0, -1)});
 
 let lastTimestamp = 0;
+let isPaused = false;
+let framerate = 60;
+
+pauseButton.onclick = () => {
+    if(isPaused) {
+        isPaused = false;
+        pauseButton.textContent = "Pause";
+    } else {
+        isPaused = true;
+        pauseButton.textContent = "Resume";
+    }
+};
 
 function loop(timestamp: number) {
     let deltaTime = timestamp - lastTimestamp;
     lastTimestamp = timestamp;
-    let framerate = 1000 / deltaTime;
+    framerate = 0.925 * framerate + 0.075 * (1000 / deltaTime);
     framerateText.textContent = framerate.toFixed(1) + " FPS";
 
     // Update
-    for(let its=0; its<200; its++) {
-        step(particles, 1e-4);
+    if(!isPaused) {
+        for(let its=0; its<200; its++) {
+            step(particles, 1e-4);
 
-        for(let i=0; i<particles.length; i++) {
-            if(particles[i].position.x < 0) particles[i].position.x += BOX_SIZE;
-            if(particles[i].position.x > BOX_SIZE) particles[i].position.x -= BOX_SIZE;
-            if(particles[i].position.y < 0) particles[i].position.y += BOX_SIZE;
-            if(particles[i].position.y > BOX_SIZE) particles[i].position.y -= BOX_SIZE;
+            for(let i=0; i<particles.length; i++) {
+                if(particles[i].position.x < 0) particles[i].position.x += BOX_SIZE;
+                if(particles[i].position.x > BOX_SIZE) particles[i].position.x -= BOX_SIZE;
+                if(particles[i].position.y < 0) particles[i].position.y += BOX_SIZE;
+                if(particles[i].position.y > BOX_SIZE) particles[i].position.y -= BOX_SIZE;
+            }
         }
     }
 
