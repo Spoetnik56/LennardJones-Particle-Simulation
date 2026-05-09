@@ -68,7 +68,7 @@ type Particle = {
     velocity: Vector2d;
 }
 
-const BOX_SIZE = 16;
+const BOX_SIZE = 20;
 
 function differencePeriodic(v1: Vector2d, v2: Vector2d): Vector2d {
     let delta = new Vector2d(v1.x - v2.x, v1.y - v2.y);
@@ -151,6 +151,10 @@ particles.push({position: new Vector2d(6.2, 7.4), velocity: new Vector2d(0, 0)})
 particles.push({position: new Vector2d(7.4, 5.0), velocity: new Vector2d(-2, 2)});
 particles.push({position: new Vector2d(7.4, 6.2), velocity: new Vector2d(0, 0)});
 particles.push({position: new Vector2d(7.4, 7.4), velocity: new Vector2d(0, -1)});
+particles.push({position: new Vector2d(0, 1), velocity: new Vector2d(0, 0)});
+particles.push({position: new Vector2d(1, 1), velocity: new Vector2d(0, 0)});
+particles.push({position: new Vector2d(2, 2), velocity: new Vector2d(0, 0)});
+particles.push({position: new Vector2d(3, 3), velocity: new Vector2d(0, 0)});
 
 let lastTimestamp = 0;
 let isPaused = false;
