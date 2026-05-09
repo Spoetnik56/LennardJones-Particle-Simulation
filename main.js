@@ -46,7 +46,7 @@ var Vector2d = /** @class */ (function () {
     };
     return Vector2d;
 }());
-var BOX_SIZE = 16;
+var BOX_SIZE = 24;
 function differencePeriodic(v1, v2) {
     var delta = new Vector2d(v1.x - v2.x, v1.y - v2.y);
     if (delta.x > BOX_SIZE / 2) {
@@ -117,6 +117,10 @@ particles.push({ position: new Vector2d(6.2, 7.4), velocity: new Vector2d(0, 0) 
 particles.push({ position: new Vector2d(7.4, 5.0), velocity: new Vector2d(-2, 2) });
 particles.push({ position: new Vector2d(7.4, 6.2), velocity: new Vector2d(0, 0) });
 particles.push({ position: new Vector2d(7.4, 7.4), velocity: new Vector2d(0, -1) });
+particles.push({ position: new Vector2d(0, 1), velocity: new Vector2d(0, 0) });
+particles.push({ position: new Vector2d(1, 1), velocity: new Vector2d(0, 0) });
+particles.push({ position: new Vector2d(2, 2), velocity: new Vector2d(0, 0) });
+particles.push({ position: new Vector2d(3, 3), velocity: new Vector2d(0, 0) });
 var lastTimestamp = 0;
 var isPaused = false;
 var framerate = 60;
